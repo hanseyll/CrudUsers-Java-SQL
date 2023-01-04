@@ -80,6 +80,11 @@ public class frmStaff extends javax.swing.JFrame {
         btnEdit.setText("Edit");
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -174,6 +179,9 @@ public class frmStaff extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     public void showData(){
+        while(model.getRowCount()>0){
+            model.removeRow(0);
+        }
          connection objConnection = new connection();
          try {
             ResultSet result = objConnection.queryRecords("SELECT * FROM Staff");
@@ -202,9 +210,20 @@ public class frmStaff extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(evt.getClickCount()==1){
             JTable receiver = (JTable)evt.getSource();
-        
+            txtId.setText(receiver.getModel().getValueAt(receiver.getSelectedRow(),0).toString());
+            txtName.setText(receiver.getModel().getValueAt(receiver.getSelectedRow(),1).toString());
+            txtEmail.setText(receiver.getModel().getValueAt(receiver.getSelectedRow(),2).toString());
         }
     }//GEN-LAST:event_tblStaffMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+          connection objConnection = new connection();
+        staffBL oStaff = recoverDataGUI();
+        String strInsertSentence= String.format("DELETE FROM Staff WHERE Id = %d", oStaff.getId());
+        objConnection.excuteSQLSentence(strInsertSentence);
+        this.showData();
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     public staffBL recoverDataGUI(){
     staffBL oStaff = new staffBL();
