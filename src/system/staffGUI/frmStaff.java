@@ -5,6 +5,8 @@
 package system.staffGUI;
 import system.staffDAL.connection;
 import java.sql.ResultSet;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import system.staffBL.staffBL;
 
 /**
@@ -12,12 +14,18 @@ import system.staffBL.staffBL;
  * @author javie
  */
 public class frmStaff extends javax.swing.JFrame {
-
+    DefaultTableModel model;
     /**
      * Creates new form frmStaff
      */
     public frmStaff() {
         initComponents();
+        
+        String[] titles= {"Id","Name","Email"};
+        model = new DefaultTableModel(null,titles);
+        tblStaff.setModel(model);
+        showData();
+     
     }
 
     /**
@@ -55,6 +63,11 @@ public class frmStaff extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblStaff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblStaffMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblStaff);
 
         btnAdd.setText("Add");
@@ -157,19 +170,26 @@ public class frmStaff extends javax.swing.JFrame {
         staffBL oStaff = recoverDataGUI();
         String strInsertSentence= String.format("INSERT INTO Staff (Id, Name, Email) VALUES (null,'%s','%s')",oStaff.getName(),oStaff.getEmail());
         objConnection.excuteSQLSentence(strInsertSentence);
-        try {
+       
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    public void showData(){
+         connection objConnection = new connection();
+         try {
             ResultSet result = objConnection.queryRecords("SELECT * FROM Staff");
             while (result.next()) {
                 System.out.println( result.getString("Id"));
                 System.out.println( result.getString("Name"));
                 System.out.println( result.getString("Email"));
-                
+                Object[] oUsers={result.getString("Id"),result.getString("Name"), result.getString("Email")};
+                model.addRow(oUsers);
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-    }//GEN-LAST:event_btnAddActionPerformed
-
+        
+       
+    }
     private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdActionPerformed
@@ -177,6 +197,14 @@ public class frmStaff extends javax.swing.JFrame {
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNameActionPerformed
+
+    private void tblStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStaffMouseClicked
+        // TODO add your handling code here:
+        if(evt.getClickCount()==1){
+            JTable receiver = (JTable)evt.getSource();
+        
+        }
+    }//GEN-LAST:event_tblStaffMouseClicked
 
     public staffBL recoverDataGUI(){
     staffBL oStaff = new staffBL();
