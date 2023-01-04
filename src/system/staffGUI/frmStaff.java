@@ -78,6 +78,11 @@ public class frmStaff extends javax.swing.JFrame {
         });
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -175,7 +180,7 @@ public class frmStaff extends javax.swing.JFrame {
         staffBL oStaff = recoverDataGUI();
         String strInsertSentence= String.format("INSERT INTO Staff (Id, Name, Email) VALUES (null,'%s','%s')",oStaff.getName(),oStaff.getEmail());
         objConnection.excuteSQLSentence(strInsertSentence);
-       
+       this.showData();
     }//GEN-LAST:event_btnAddActionPerformed
 
     public void showData(){
@@ -224,6 +229,15 @@ public class frmStaff extends javax.swing.JFrame {
         objConnection.excuteSQLSentence(strInsertSentence);
         this.showData();
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+         connection objConnection = new connection();
+        staffBL oStaff = recoverDataGUI();
+        String strInsertSentence= String.format("UPDATE Staff SET Name='%s'," + "Email='%s' WHERE Id=%d",oStaff.getName(),oStaff.getEmail(), oStaff.getId());
+        objConnection.excuteSQLSentence(strInsertSentence);
+       this.showData();
+    }//GEN-LAST:event_btnEditActionPerformed
 
     public staffBL recoverDataGUI(){
     staffBL oStaff = new staffBL();
