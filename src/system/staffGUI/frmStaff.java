@@ -24,7 +24,8 @@ public class frmStaff extends javax.swing.JFrame {
         String[] titles= {"Id","Name","Email"};
         model = new DefaultTableModel(null,titles);
         tblStaff.setModel(model);
-        showData();
+        this.showData();
+        this.clean();
      
     }
 
@@ -98,6 +99,7 @@ public class frmStaff extends javax.swing.JFrame {
             }
         });
 
+        txtId.setEditable(false);
         txtId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIdActionPerformed(evt);
@@ -172,6 +174,7 @@ public class frmStaff extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
+        this.clean();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -181,6 +184,8 @@ public class frmStaff extends javax.swing.JFrame {
         String strInsertSentence= String.format("INSERT INTO Staff (Id, Name, Email) VALUES (null,'%s','%s')",oStaff.getName(),oStaff.getEmail());
         objConnection.excuteSQLSentence(strInsertSentence);
        this.showData();
+       this.clean();
+      
     }//GEN-LAST:event_btnAddActionPerformed
 
     public void showData(){
@@ -219,6 +224,10 @@ public class frmStaff extends javax.swing.JFrame {
             txtName.setText(receiver.getModel().getValueAt(receiver.getSelectedRow(),1).toString());
             txtEmail.setText(receiver.getModel().getValueAt(receiver.getSelectedRow(),2).toString());
         }
+          
+    btnAdd.setEnabled(false);
+    btnEdit.setEnabled(true);
+    btnDelete.setEnabled(true);
     }//GEN-LAST:event_tblStaffMouseClicked
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -228,6 +237,7 @@ public class frmStaff extends javax.swing.JFrame {
         String strInsertSentence= String.format("DELETE FROM Staff WHERE Id = %d", oStaff.getId());
         objConnection.excuteSQLSentence(strInsertSentence);
         this.showData();
+         this.clean();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -237,6 +247,7 @@ public class frmStaff extends javax.swing.JFrame {
         String strInsertSentence= String.format("UPDATE Staff SET Name='%s'," + "Email='%s' WHERE Id=%d",oStaff.getName(),oStaff.getEmail(), oStaff.getId());
         objConnection.excuteSQLSentence(strInsertSentence);
        this.showData();
+        this.clean();
     }//GEN-LAST:event_btnEditActionPerformed
 
     public staffBL recoverDataGUI(){
@@ -250,6 +261,17 @@ public class frmStaff extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    public void clean (){
+    txtId.setText("");
+    txtName.setText("");
+    txtEmail.setText("");
+    
+    btnAdd.setEnabled(true);
+    btnEdit.setEnabled(false);
+    btnDelete.setEnabled(false);
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
